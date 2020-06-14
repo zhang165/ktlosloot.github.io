@@ -2,16 +2,19 @@ function loadJson() {
 	var xhr = new XMLHttpRequest();
 	xhr.responseType = 'json';
 	xhr.onreadystatechange = function(e) {
-		if (this.readyState == 4 && this.status == 200)
+		if (this.readyState == 4 && this.status == 200) {
 			process(this.response);
+		}
 	}
 	xhr.open('GET', 'https://ktlosloot.github.io/data/KTLOSBWLLoot.json');
 	xhr.send();
+	fetch('https://ktlosloot.github.io/data/KTLOSBWLLoot.json').then(response => process(response.json()));
 }
 
 loadJson();
 
 function process(data) {
+	console.log(data);
 	renderBWL(data["BWL"]);
 }
 
