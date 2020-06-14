@@ -5,7 +5,7 @@ function loadJson() {
 		if (this.readyState == 4 && this.status == 200)
 			process(this.response);
 	}
-	xhr.open('GET', 'http://ktlosloot.github.io/data/KTLOSBWLLoot.json');
+	xhr.open('GET', 'https://ktlosloot.github.io/data/KTLOSBWLLoot.json');
 	xhr.send();
 }
 
