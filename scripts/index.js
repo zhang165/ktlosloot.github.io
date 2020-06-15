@@ -51,7 +51,6 @@ function renderBWL(bwlMap) {
 
 			let itemHeader = document.createElement("td");
 			itemHeader.classList.add("item-header");
-			itemHeader.innerText = item + " (GP: " + bwlMap[boss][item][GP_KEY] + ") ";
 			
 			if (bwlMap[boss][item][WOW_ID_KEY] != 0) {
 				let wowIdKey = "item=" + bwlMap[boss][item][WOW_ID_KEY];
