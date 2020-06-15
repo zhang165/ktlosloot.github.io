@@ -74,17 +74,24 @@ function renderTable(dataMap, raidName) {
 		bossTable.classList.add("boss-table");
 		bossItems.appendChild(bossTable);
 
+		var isEven = true;
 		for (var item in dataMap[boss]) {
 			let itemTr = document.createElement("tr");
+			if (isEven) { 
+				itemTr.classList.add("even");
+			}
+			isEven = !isEven;
 			let gpHeader = document.createElement("td");
 
 			let gpValue = dataMap[boss][item][GP_KEY] == undefined ? "" : dataMap[boss][item][GP_KEY];
 			gpHeader.classList.add("gp-header");
 			gpHeader.innerText = "(GP: " + gpValue + ")";
+			gpHeader.classList.add("prio");
 			itemTr.appendChild(gpHeader);
 
 			let itemHeader = document.createElement("td");
 			itemHeader.classList.add("item-header");
+			itemHeader.classList.add("prio");
 			
 			if (dataMap[boss][item][WOW_ID_KEY] != 0) {
 				let wowIdKey = "item=" + dataMap[boss][item][WOW_ID_KEY];
@@ -101,6 +108,7 @@ function renderTable(dataMap, raidName) {
 			for (var prioIndex in dataMap[boss][item][PRIO_KEY]) {
 				let prio = dataMap[boss][item][PRIO_KEY][prioIndex];
 				let prioTd = document.createElement("td");
+				prioTd.classList.add("prio");
 				prioTd.innerText = prio;
 				itemTr.appendChild(prioTd);
 			}
