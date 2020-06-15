@@ -99,6 +99,7 @@ function renderTable(dataMap, raidName) {
 				itemHeader.appendChild(itemAnchor);
 				itemAnchor.href = (WOW_HEAD_LINK + wowIdKey);
 				itemAnchor.setAttribute("data-wowhead", wowIdKey);
+				itemAnchor.innerText = item;
 			} else {
 				itemHeader.innerText = item;
 			}		
