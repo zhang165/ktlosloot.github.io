@@ -1,4 +1,7 @@
-const BWL_KEY = "BWL";
+const GP_KEY = "gp";
+const PRIO_KEY = "prio";
+const WOW_ID_KEY = "wowID";
+const WOW_HEAD_LINK = "https://classic.wowhead.com/";
 
 function loadJson() {
 	var xhr = new XMLHttpRequest();
@@ -15,11 +18,11 @@ function loadJson() {
 loadJson();
 
 function process(data) {
-	renderBWL(data[BWL_KEY]);
+	renderBWL(data);
 }
 
 function renderBWL(bwlMap) {
-	var bwlSection = document.createElement("table");
+	let bwlSection = document.createElement("table");
 	bwlSection.innerText = "Black Wing Lair";
 
 	for (var boss in bwlMap) {
@@ -32,7 +35,6 @@ function renderBWL(bwlMap) {
 
 		let bossItems = document.createElement("td");
 
-
 		bossRow.appendChild(bossItems);
 		let bossTable = document.createElement("table");
 		bossTable.classList.add("boss-table");
@@ -40,20 +42,31 @@ function renderBWL(bwlMap) {
 
 		for (var item in bwlMap[boss]) {
 			let itemTr = document.createElement("tr");
+			let gpHeader = document.createElement("td");
+
+			let gpValue = bwlMap[boss][item][GP_KEY] == 0 ? "?" : bwlMap[boss][item][GP_KEY];
+			gpHeader.classList.add("gp-header");
+			gpHeader.innerText = "(GP: " + gpValue + ")";
+			itemTr.appendChild(gpHeader);
+
 			let itemHeader = document.createElement("td");
 			itemHeader.classList.add("item-header");
-
-			itemHeader.innerText = item + " (GP: " + bwlMap[boss][item]["gp"] + ") ";
-			let itemAnchor = document.createElement('a');  
-			itemHeader.appendChild(itemAnchor);
-			itemAnchor.href = "#";
-			// TODO: set appropriate item nums from wowhead.
-			itemAnchor.setAttribute("data-wowhead","item=19395");
+			itemHeader.innerText = item + " (GP: " + bwlMap[boss][item][GP_KEY] + ") ";
+			
+			if (bwlMap[boss][item][WOW_ID_KEY] != 0) {
+				let wowIdKey = "item=" + bwlMap[boss][item][WOW_ID_KEY];
+				let itemAnchor = document.createElement('a');  
+				itemHeader.appendChild(itemAnchor);
+				itemAnchor.href = (WOW_HEAD_LINK + wowIdKey);
+				itemAnchor.setAttribute("data-wowhead", wowIdKey);
+			} else {
+				itemHeader.innerText = item;
+			}		
 
 			bossTable.appendChild(itemTr);
 			itemTr.appendChild(itemHeader);
-			for (var prioIndex in bwlMap[boss][item]["prio"]) {
-				let prio = bwlMap[boss][item]["prio"][prioIndex];
+			for (var prioIndex in bwlMap[boss][item][PRIO_KEY]) {
+				let prio = bwlMap[boss][item][PRIO_KEY][prioIndex];
 				let prioTd = document.createElement("td");
 				prioTd.innerText = prio;
 				itemTr.appendChild(prioTd);
