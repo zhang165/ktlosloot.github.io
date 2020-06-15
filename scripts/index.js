@@ -11,6 +11,7 @@ function loadJsonAndRender(raidName) {
 	xhr.responseType = 'json';
 	xhr.onreadystatechange = function(e) {
 		if (this.readyState == 4 && this.status == 200) {
+			clearDataSection();
 			process(this.response, raidName);
 		}
 	}
@@ -20,27 +21,24 @@ function loadJsonAndRender(raidName) {
 }
 
 function loadBWL() {
-	clearDataSection();
 	loadJsonAndRender("bwl");
 }
 
 function loadAQ40() {
-	clearDataSection();
 	loadJsonAndRender("aq40");
 }
 
 function loadMC() {
-	clearDataSection();
 	loadJsonAndRender("mc");
 }
 
 function clearDataSection() {
 	var dataSection = document.getElementById("data-section");
-	if (dataSection != 0) {
+	if (dataSection != undefined) {
 		dataSection.remove();
 	}
 	var raidHeader = document.getElementById("raid-header");
-	if (raidHeader != 0) {
+	if (raidHeader != undefined) {
 		raidHeader.remove();
 	}
 }
@@ -50,16 +48,16 @@ function process(data, raidName) {
 }
 
 function renderTable(dataMap, raidName) {
-	const wrapper = document.querySelector(".wrapper");
+	const dataWrapper = document.querySelector("#data-wrapper");
 
 	let raidHeader = document.createElement("div");
 	raidHeader.setAttribute("id","raid-header");
-	wrapper.appendChild(raidHeader);
+	dataWrapper.appendChild(raidHeader);
 	raidHeader.innerText = RAID_NAME_MAP[raidName];
 
 	let dataSection = document.createElement("table");
 	dataSection.setAttribute("id","data-section");
-	wrapper.appendChild(dataSection);
+	dataWrapper.appendChild(dataSection);
 
 	for (var boss in dataMap) {
 		let bossRow = document.createElement("tr");
