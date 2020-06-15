@@ -5,6 +5,9 @@ const WOW_HEAD_LINK = "https://classic.wowhead.com/";
 const BASE_REQUEST_LINK = "https://bendriller.github.io/";
 const JSON_REQUEST_MAP = {"aq40" : "KTLOSAQ40Loot.json", "bwl": "KTLOSBWLLoot.json", "mc":"KTLOSMCLoot.json"};
 const RAID_NAME_MAP = {"aq40" : "Temple of Ahn'Qiraj", "bwl": "Blackwing Lair", "mc":"Molten Core"};
+const WOWHEAD_JS = "https://wow.zamimg.com/widgets/power.js";
+
+const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: true};
 
 function loadJsonAndRender(raidName) {
 	var xhr = new XMLHttpRequest();
@@ -45,6 +48,13 @@ function clearDataSection() {
 
 function process(data, raidName) {
 	renderTable(data, raidName);
+	reloadWowheadScript();
+}
+
+function reloadWowheadScript() {
+    $('script[src="' + WOWHEAD_JS + '"]').remove();
+    $('<script>').attr('src', WOWHEAD_JS).appendTo('head');
+    console.log("reload");
 }
 
 function renderTable(dataMap, raidName) {
