@@ -25,3 +25,81 @@ body {
 .gp-header {
 	min-width: 50px;
 }
+
+ul {
+    list-style-type: none;
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+	display: inline;
+}
+
+#raid-header {
+	text-align: center;
+	position: relative;
+	font-family: 'Roboto', sans-serif;
+	background: #FFFFFF;
+	background-color: #FFFFFF;
+	width: 100%;
+	font-size: 16px;
+	padding-top: 1%;
+	padding-bottom: 1%;
+    border-bottom:1px solid #e7e7e7;
+	height: 10%;
+	margin-bottom: 20px;
+}
+
+.navigation{
+	text-align: center;
+	position: relative;
+	font-family: 'Roboto', sans-serif;
+	background: #FFFFFF;
+	background-color: #FFFFFF;
+	width: 100%;
+	font-size: 16px;
+	padding-top: 1%;
+	padding-bottom: 1%;
+    border-bottom:1px solid #e7e7e7;
+	height: 10%;
+	-webkit-transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease;
+	-o-transition: all 0.3s ease;
+	-ms-transition: all 0.3s ease;
+}
+
+.navigation li {
+	font-size: 18px;
+	text-decoration: none;
+	color: black;
+    padding: 25px;
+    -webkit-transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease;
+	-o-transition: all 0.3s ease;
+	-ms-transition: all 0.3s ease;
+}
+
+.navigation li:hover {
+	font-size: 24px;
+	cursor: pointer;
+	color: #e5e5e5;
+    padding: 45px;
+    -webkit-transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease;
+	-o-transition: all 0.3s ease;
+	-ms-transition: all 0.3s ease;
+}
+
+i{
+	padding: 5px;
+	-webkit-transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease;
+	-o-transition: all 0.3s ease;
+	-ms-transition: all 0.3s ease;
+}
+
+.dataSection {
+	margin-top: 8px;
+} 

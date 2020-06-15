@@ -2,36 +2,72 @@ const GP_KEY = "gp";
 const PRIO_KEY = "prio";
 const WOW_ID_KEY = "wowID";
 const WOW_HEAD_LINK = "https://classic.wowhead.com/";
+const BASE_REQUEST_LINK = "https://bendriller.github.io/";
+const JSON_REQUEST_MAP = {"aq40" : "KTLOSAQ40Loot.json", "bwl": "KTLOSBWLLoot.json", "mc":"KTLOSMCLoot.json"};
+const RAID_NAME_MAP = {"aq40" : "Temple of Ahn'Qiraj", "bwl": "Blackwing Lair", "mc":"Molten Core"};
 
-function loadJson() {
+function loadJsonAndRender(raidName) {
 	var xhr = new XMLHttpRequest();
 	xhr.responseType = 'json';
 	xhr.onreadystatechange = function(e) {
 		if (this.readyState == 4 && this.status == 200) {
-			process(this.response);
+			process(this.response, raidName);
 		}
 	}
-	xhr.open('GET', 'https://ktlosloot.github.io/data/KTLOSBWLLoot.json');
+	let jsonUrl = BASE_REQUEST_LINK + JSON_REQUEST_MAP[raidName];
+	xhr.open('GET', jsonUrl);
 	xhr.send();
 }
 
-loadJson();
-
-function process(data) {
-	renderBWL(data);
+function loadBWL() {
+	clearDataSection();
+	loadJsonAndRender("bwl");
 }
 
-function renderBWL(bwlMap) {
-	let bwlSection = document.createElement("table");
-	bwlSection.innerText = "Black Wing Lair";
+function loadAQ40() {
+	clearDataSection();
+	loadJsonAndRender("aq40");
+}
 
-	for (var boss in bwlMap) {
+function loadMC() {
+	clearDataSection();
+	loadJsonAndRender("mc");
+}
+
+function clearDataSection() {
+	var dataSection = document.getElementById("data-section");
+	if (dataSection != 0) {
+		dataSection.remove();
+	}
+	var raidHeader = document.getElementById("raid-header");
+	if (raidHeader != 0) {
+		raidHeader.remove();
+	}
+}
+
+function process(data, raidName) {
+	renderTable(data, raidName);
+}
+
+function renderTable(dataMap, raidName) {
+	const wrapper = document.querySelector(".wrapper");
+
+	let raidHeader = document.createElement("div");
+	raidHeader.setAttribute("id","raid-header");
+	wrapper.appendChild(raidHeader);
+	raidHeader.innerText = RAID_NAME_MAP[raidName];
+
+	let dataSection = document.createElement("table");
+	dataSection.setAttribute("id","data-section");
+	wrapper.appendChild(dataSection);
+
+	for (var boss in dataMap) {
 		let bossRow = document.createElement("tr");
 		let bossTd = document.createElement("td");
 		bossTd.innerText = boss;
 		bossTd.classList.add("boss-header");
 		bossRow.appendChild(bossTd);
-		bwlSection.appendChild(bossRow);
+		dataSection.appendChild(bossRow);
 
 		let bossItems = document.createElement("td");
 
@@ -40,11 +76,11 @@ function renderBWL(bwlMap) {
 		bossTable.classList.add("boss-table");
 		bossItems.appendChild(bossTable);
 
-		for (var item in bwlMap[boss]) {
+		for (var item in dataMap[boss]) {
 			let itemTr = document.createElement("tr");
 			let gpHeader = document.createElement("td");
 
-			let gpValue = bwlMap[boss][item][GP_KEY] == 0 ? "?" : bwlMap[boss][item][GP_KEY];
+			let gpValue = dataMap[boss][item][GP_KEY] == undefined ? "" : dataMap[boss][item][GP_KEY];
 			gpHeader.classList.add("gp-header");
 			gpHeader.innerText = "(GP: " + gpValue + ")";
 			itemTr.appendChild(gpHeader);
@@ -52,8 +88,8 @@ function renderBWL(bwlMap) {
 			let itemHeader = document.createElement("td");
 			itemHeader.classList.add("item-header");
 			
-			if (bwlMap[boss][item][WOW_ID_KEY] != 0) {
-				let wowIdKey = "item=" + bwlMap[boss][item][WOW_ID_KEY];
+			if (dataMap[boss][item][WOW_ID_KEY] != 0) {
+				let wowIdKey = "item=" + dataMap[boss][item][WOW_ID_KEY];
 				let itemAnchor = document.createElement('a');  
 				itemHeader.appendChild(itemAnchor);
 				itemAnchor.href = (WOW_HEAD_LINK + wowIdKey);
@@ -64,15 +100,15 @@ function renderBWL(bwlMap) {
 
 			bossTable.appendChild(itemTr);
 			itemTr.appendChild(itemHeader);
-			for (var prioIndex in bwlMap[boss][item][PRIO_KEY]) {
-				let prio = bwlMap[boss][item][PRIO_KEY][prioIndex];
+			for (var prioIndex in dataMap[boss][item][PRIO_KEY]) {
+				let prio = dataMap[boss][item][PRIO_KEY][prioIndex];
 				let prioTd = document.createElement("td");
 				prioTd.innerText = prio;
 				itemTr.appendChild(prioTd);
 			}
 		}
 	}
-
-	const wrapper = document.querySelector(".wrapper");
-	wrapper.appendChild(bwlSection);
 }
+
+// By default render AQ40;
+loadJsonAndRender("aq40");
